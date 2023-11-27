@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+  flutter-orb: circleci/flutter@2.0.2
+
+jobs:
+  build_android:
+    docker:
+      - image: circleci/android:api-30
+    steps:
+      - checkout
+      - flutter-orb/install_sdk_and_pub:
+          version: 3.10.0
+      - run:
+          name: Flutter Clean
+          command: flutter clean
+      - run:
+          name: Flutter Build APK
+          command: flutter build apk
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build_android
