@@ -32,17 +32,12 @@ pipeline {
         stage('Build APK') {
             steps {
                 script {
-                    def gradlewScript = sh(script: 'find . -name gradlew', returnStdout: true).trim()
+                    def gradlewPath = 'android/gradlew'
 
-                    if (gradlewScript) {
-                        echo "Found gradlew script at: ${gradlewScript}"
-
-                        def gradlewDir = gradlewScript.substring(0, gradlewScript.lastIndexOf('/'))
-                        dir(gradlewDir) {
-                            echo "Current directory: ${pwd()}"
-                            sh "/snap/bin/flutter clean"
-                            sh "/snap/bin/flutter pub get"
-                            sh "/snap/bin/flutter build apk"
+            // Run Flutter commands
+            sh "./${gradlewPath} clean"
+            sh "./${gradlewPath} pub get"
+            sh "./${gradlewPath} build apk"
                         }
                     } else {
                         error "Couldn't find gradlew script in the workspace."
