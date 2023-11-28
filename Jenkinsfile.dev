@@ -32,10 +32,21 @@ pipeline {
         stage('Build APK') {
             steps {
                 script {
-                    // Run Flutter commands for building APK
-                    sh "/snap/bin/flutter clean"
-                    sh "/snap/bin/flutter pub get"
-                    sh "/snap/bin/flutter build apk"
+                    def gradlewScript = sh(script: 'find . -name gradlew', returnStdout: true).trim()
+
+                    if (gradlewScript) {
+                        echo "Found gradlew script at: ${gradlewScript}"
+
+                        def gradlewDir = gradlewScript.substring(0, gradlewScript.lastIndexOf('/'))
+                        dir(gradlewDir) {
+                            echo "Current directory: ${pwd()}"
+                            sh "/snap/bin/flutter clean"
+                            sh "/snap/bin/flutter pub get"
+                            sh "/snap/bin/flutter build apk"
+                        }
+                    } else {
+                        error "Couldn't find gradlew script in the workspace."
+                    }
                 }
             }
         }
@@ -43,8 +54,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Assuming fastlane is installed in the Jenkins environment
-                    sh 'fastlane deploy_to_play_store'
+                    dir('/home/growlt189/jenkins') {
+                        sh 'fastlane deploy_to_play_store'
+                    }
                 }
             }
         }
