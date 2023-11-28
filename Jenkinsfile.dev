@@ -32,16 +32,12 @@ pipeline {
         stage('Build APK') {
             steps {
                 script {
-                    def gradlewPath = 'android/gradlew'
+                    def gradlewPath = '/home/growlt189/jenkins/workspace/growlt189/android/gradlew'
 
-            // Run Flutter commands
-            sh "./${gradlewPath} clean"
-            sh "./${gradlewPath} pub get"
-            sh "./${gradlewPath} build apk"
-                        }
-                    } else {
-                        error "Couldn't find gradlew script in the workspace."
-                    }
+                    // Run Flutter commands
+                    sh "./${gradlewPath} clean"
+                    sh "./${gradlewPath} pub get"
+                    sh "./${gradlewPath} build apk"
                 }
             }
         }
@@ -49,7 +45,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    dir('/home/growlt189/jenkins') {
+                    dir('/home/growlt189/jenkins/workspace/growlt189') {
                         sh 'fastlane deploy_to_play_store'
                     }
                 }
