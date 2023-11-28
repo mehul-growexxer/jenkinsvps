@@ -24,7 +24,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    dir('/home/growlt189/jenkins/workspace/growlt189/android/gradlew') {
+                    dir('/home/growlt189/jenkins') {
                         sh 'fastlane deploy_to_play_store'
                     }
                 }
