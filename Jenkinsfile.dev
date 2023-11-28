@@ -13,7 +13,7 @@ pipeline {
         stage('Build APK') {
             steps {
                 script {
-                    sh "chown growlt189:jenkins /home/growlt189/jenkins"
+                    sh "chown -R growlt189:jenkins /home/growlt189/jenkins"
                     sh "/snap/bin/flutter clean"
                     sh "/snap/bin/flutter pub get"
                     sh "/snap/bin/flutter build apk"
