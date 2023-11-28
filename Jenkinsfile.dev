@@ -2,69 +2,36 @@ pipeline {
     agent {
         label 'growlt189'
     }
-
-
+ 
     stages {
-        stage('Debug') {
+        stage('Checkout') {
             steps {
-                echo 'Current workspace:'
-                sh 'ls -al'
-
-
-                echo 'Contents of android directory:'
-                sh 'ls -al android'
-
-
-                echo 'Contents of project root directory:'
-                sh 'ls -al'
+                checkout scm
             }
         }
-
-
-        // ... other stages ...
-
-
+ 
         stage('Build APK') {
             steps {
                 script {
-                    // Find the location of the gradlew script
-                    def gradlewScript = sh(script: 'find . -name gradlew', returnStdout: true).trim()
-
-
-                    if (gradlewScript) {
-                        echo "Found gradlew script at: ${gradlewScript}"
-
-
-                        // Navigate to the directory containing gradlew
-                        def gradlewDir = gradlewScript.substring(0, gradlewScript.lastIndexOf('/'))
-                        dir(gradlewDir) {
-                            echo "Current directory: ${pwd()}"
-                            // Run Flutter commands
-                            sh "/snap/bin/flutter clean"
-                            sh "/snap/bin/flutter pub get"
-                            sh "/snap/bin/flutter build apk"
-                        }
-                    } else {
-                        error "Couldn't find gradlew script in the workspace."
-                    }
+                    
+                    sh "/snap/bin/flutter clean"
+                    sh "/snap/bin/flutter pub get"
+                    sh "/snap/bin/flutter build apk"
                 }
             }
         }
-        
-        // ... other stages ...
-stage('Deploy') {
+ 
+        stage('Deploy') {
             steps {
                 script {
-                    dir('/home/growlt189/jenkins/android') {
+                    dir('/home/growlt189/jenkins/workspace/growlt189/android/gradlew') {
                         sh 'fastlane deploy_to_play_store'
                     }
                 }
             }
         }
-    
     }
-
-
+ 
     post {
         success {
             echo 'Build and deployment successful!'
