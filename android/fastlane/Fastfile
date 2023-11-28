@@ -1,0 +1,26 @@
+default_platform(:android)
+
+platform :android do
+  lane :deploy_to_play_store do
+    # Customize this lane for deploying to the Play Store
+    # You might want to use gradle to upload the APK to Play Store
+    gradle(
+      task: 'bundleRelease',
+      build_type: 'Release',
+      properties: {
+        'android.injected.signing.store.file' => '/home/growlt189/fluttertest-keystore.jks',
+        'android.injected.signing.store.password' => '1234',
+        'android.injected.signing.key.alias' => 'growexx',
+        'android.injected.signing.key.password' => '1234'
+      }
+    )
+
+    # Deploy to Play Store
+    supply(
+      track: 'beta', # Change this to 'beta' or 'production' as needed
+      json_key: 'path/to/your/play_store_api_key.json',
+      package_name: 'your_flutter_app_package_name',
+      skip_upload_apk: true # Set to false if you want to upload APK
+    )
+  end
+end
