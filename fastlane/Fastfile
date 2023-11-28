@@ -15,12 +15,5 @@ platform :android do
       }
     )
 
-    # Deploy to Play Store
-    supply(
-      track: 'beta', # Change this to 'beta' or 'production' as needed
-      json_key: 'path/to/your/play_store_api_key.json',
-      package_name: 'your_flutter_app_package_name',
-      skip_upload_apk: true # Set to false if you want to upload APK
-    )
-  end
+   
 end
