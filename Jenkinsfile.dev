@@ -13,7 +13,7 @@ pipeline {
        stage('Build APK') {
             steps {
                 script {
-                    def gradlewPath = '/home/growlt189/jenkins/workspace/growlt189/android/gradlew'
+                    
                     sh "/snap/bin/flutter clean"
                     sh "/snap/bin/flutter pub get"
                     sh "/snap/bin/flutter build apk"
