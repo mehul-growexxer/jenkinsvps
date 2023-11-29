@@ -10,13 +10,13 @@ pipeline {
             }
         }
  
-        stage('Build APK') {
+       stage('Build APK') {
             steps {
                 script {
-                   
-                    sh "/opt/flutter/flutter/bin/flutter clean"
-                    sh "/opt/flutter/flutter/bin/flutter pub get"
-                    sh "/opt/flutter/flutter/bin/flutter build apk"
+                    def gradlewPath = '/home/growlt189/jenkins/workspace/growlt189/android/gradlew'
+                    sh "/snap/bin/flutter clean"
+                    sh "/snap/bin/flutter pub get"
+                    sh "/snap/bin/flutter build apk"
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    dir('/home/jenkins/jenkins/workspace/growlt189') {
+                    dir('/home/growlt189/jenkins') {
                         sh 'fastlane deploy_to_play_store'
                     }
                 }
